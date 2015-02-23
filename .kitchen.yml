@@ -1,12 +1,15 @@
 ---
 driver:
-  name: vagrant
-  customize:
-    memory: 2048
-  network:
-  - ["forwarded_port", {guest: 9200, host: 9200, auto_correct: true}]  # elastic
-  - ["forwarded_port", {guest: 80,   host: 8080, auto_correct: true}]  # kibana
-  - ["forwarded_port", {guest: 443,   host: 8443, auto_correct: true}] # ssl
+  name: ec2
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
+  ssh_key: <%= File.expand_path(ENV['AWS_SSH_KEY']) %>
+  security_group_ids: ["sg-68e9c90d"]
+  region: <%= ENV['AWS_DEFAULT_REGION'] %>
+  availability_zone: <%= ENV['AWS_DEFAULT_REGION'] %>c
+  require_chef_omnibus: true
+  subnet_id: subnet-2ae12073
 
 driver_config:
   require_chef_omnibus: true
@@ -24,7 +27,7 @@ provisioner:
       public_ipv4: '127.0.0.1'
     authorization:
       sudo:
-        users: ['vagrant']
+        users: ['ubuntu']
         passwordless: true
     platformstack:
       iptables:
@@ -49,6 +52,9 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
+    driver:
+      image_id: ami-47547277
+      username: ubuntu
     run_list:
     - recipe[apt]
 
