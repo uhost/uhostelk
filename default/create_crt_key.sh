@@ -1,16 +1,27 @@
 #!/bin/bash
 #
+# create_crt_key.sh <logserver dns name>
+#
 # creates the encrypted data bag secret
 # creates a key and certificate
 # adds them to a local encrypted data bag
 #
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "Usage: create_crt_key.sh <logserver dns name>"
+    exit 1;
+fi
+
+name=$1
 
 if [ ! -f encrypted_data_bag_secret ]; then
   openssl rand -base64 512 | tr -d '\r\n' > encrypted_data_bag_secret
 fi
 
 if [ ! -f lj.key ] || [ ! -f lj.crt ]; then
-  openssl req -x509 -newkey rsa:2048 -keyout lj.key -out lj.crt -nodes -subj /CN=logstash.getuhost.org
+  openssl req -x509 -newkey rsa:2048 -keyout lj.key -out lj.crt -nodes -subj /CN=$name
 fi
 
 CERT=`cat lj.crt | base64 | xargs echo | sed 's/ //g'`
