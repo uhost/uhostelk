@@ -9,5 +9,5 @@
 
 include_recipe "apt"
 
-include_recipe "elkstack::java"
+include_recipe "java::default"
 include_recipe "elkstack::single"

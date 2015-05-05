@@ -10,6 +10,6 @@ version          '0.1.0'
 	  supports os
 end
 
-%w{ apt elkstack }.each do |cb|
+%w{ apt elkstack java }.each do |cb|
 	  depends cb
 end
