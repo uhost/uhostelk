@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# create_crt_key.sh <logserver dns name>
+# create_crt_key.sh <chef repo path> <logserver dns name>
 #
 # creates the encrypted data bag secret
 # creates a key and certificate
@@ -9,12 +9,19 @@
 
 set -e
 
-if [ $# -eq 0 ]; then
-    echo "Usage: create_crt_key.sh <logserver dns name>"
+if [ $# -eq 1 ]; then
+    echo "Usage: create_crt_key.sh <chef repo path> <logserver dns name>"
     exit 1;
 fi
 
-name=$1
+if [ -d $1 ]; then
+  cd $1
+else
+  echo "$1 is not a directory"
+  exti 1;
+fi
+
+name=$2
 
 if [ ! -f encrypted_data_bag_secret ]; then
   openssl rand -base64 512 | tr -d '\r\n' > encrypted_data_bag_secret
