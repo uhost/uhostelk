@@ -9,5 +9,4 @@
 
 include_recipe "apt"
 
-include_recipe "elkstack::java"
-include_recipe "elkstack::single"
+include_recipe "elkstack::forwarder"
