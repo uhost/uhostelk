@@ -10,6 +10,7 @@ driver:
   availability_zone: <%= ENV['AWS_DEFAULT_REGION'] %>c
   require_chef_omnibus: true
   subnet_id: subnet-2ae12073
+  flavor_id: m3.medium
 
 driver_config:
   require_chef_omnibus: true
@@ -45,10 +46,16 @@ provisioner:
         number_of_replicas: 0
         # so the kitchen node doesn't have unallocated replica shards
         # and comes up green (healthy) instead of yellow
+    kibana:
+      server_aliases: ['logstash.getuhost.org']
     elkstack:
       config:
         kibana:
           password: 'kibana'
+    go:
+      version: "1.4.2"
+    logstash_forwarder:
+      git_revision: master
 
 platforms:
   - name: ubuntu-14.04
@@ -70,4 +77,16 @@ suites:
         discovery:
           zen:
             minimum_master_nodes: 1 # since search returns more than one, but they are fake
+  - name: forwarder
+    data_bags_path: "default/data_bags"
+    encrypted_data_bag_secret_key_path: "default/encrypted_data_bag_secret"
+    run_list:
+      - recipe[elkstack::forwarder]
+    attributes:
+      elasticsearch:
+        discovery:
+          zen:
+            ping:
+              unicast:
+                hosts: ["logstash.getuhost.org"]
 
