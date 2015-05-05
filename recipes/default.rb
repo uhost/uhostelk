@@ -10,4 +10,4 @@
 include_recipe "apt"
 
 include_recipe "java::default"
-include_recipe "elkstack::single"
+include_recipe "elkstack::default"
