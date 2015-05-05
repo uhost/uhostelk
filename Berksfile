@@ -1,4 +1,4 @@
-source "https://supermarket.getchef.com"
+source "https://supermarket.chef.io"
 
 cookbook 'logstash', git: 'https://github.com/lusis/chef-logstash.git'
 
