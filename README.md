@@ -110,6 +110,10 @@ gem install bundler
 
 bundle
 
+###Create keys
+
+./create_crt_key.sh default logstash.getuhost.org -z
+
 ###Run kitchen
 
 kitchen converage
