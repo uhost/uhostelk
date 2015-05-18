@@ -67,13 +67,12 @@ suites:
     data_bags_path: "default/data_bags"
     encrypted_data_bag_secret_key_path: "default/encrypted_data_bag_secret"
     run_list:
-      - recipe[java::default]
-      - recipe[elkstack::default] 
+      - recipe[uhostelk:default] 
   - name: forwarder
     data_bags_path: "default/data_bags"
     encrypted_data_bag_secret_key_path: "default/encrypted_data_bag_secret"
     run_list:
-      - recipe[elkstack::forwarder]
+      - recipe[uhostelk::forwarder]
     attributes:
       logstash_forwarder:
         config:
