@@ -1,16 +1,23 @@
 ---
 driver:
   name: ec2
-  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
   aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
-  ssh_key: <%= File.expand_path(ENV['AWS_SSH_KEY']) %>
-  security_group_ids: ["sg-68e9c90d"]
+  security_group_ids: ["<%= ENV['AWS_SECURITY_GROUP_ID'] %>"]
   region: <%= ENV['AWS_DEFAULT_REGION'] %>
-  availability_zone: <%= ENV['AWS_DEFAULT_REGION'] %>c
+  availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+  subnet_id: <%= ENV['AWS_SUBNET_ID'] %>
+  associate_public_ip: true
   require_chef_omnibus: true
-  subnet_id: subnet-2ae12073
-  flavor_id: m3.medium
+  instance_type: m3.medium
+  interface: dns
+  tags: 
+    Name: "uhostelk-test-kitchen"
+
+transport:
+  ssh_key: <%= File.expand_path(ENV['AWS_SSH_KEY']) %>
+  connection_timeout: 10
+  connection_retries: 5
+  username: ubuntu
 
 driver_config:
   require_chef_omnibus: true
@@ -53,28 +60,21 @@ provisioner:
       config:
         kibana:
           password: 'kibana'
+        agent_protocol: 'lumberjack'
 
 platforms:
   - name: ubuntu-14.04
     driver:
-      image_id: ami-67526757
-      username: ubuntu
-    run_list:
-    - recipe[apt]
+      image_id: ami-bbd5c08b
 
 suites:
   - name: default
     data_bags_path: "default/data_bags"
     encrypted_data_bag_secret_key_path: "default/encrypted_data_bag_secret"
     run_list:
-      - recipe[uhostelk:default] 
+      - recipe[uhostelk::default] 
   - name: forwarder
     data_bags_path: "default/data_bags"
     encrypted_data_bag_secret_key_path: "default/encrypted_data_bag_secret"
     run_list:
       - recipe[uhostelk::forwarder]
-    attributes:
-      logstash_forwarder:
-        config:
-          network:
-            servers: ['logstash.getuhost.org:5960']

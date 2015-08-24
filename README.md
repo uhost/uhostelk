@@ -1,10 +1,10 @@
 # uhostelk-cookbook
 
-TODO: Enter the cookbook description here.
+Creates a elkstack server for use with uhost
 
 ## Supported Platforms
 
-TODO: List your supported platforms.
+ubuntu 14.04
 
 ## Attributes
 
