@@ -34,7 +34,7 @@ fi
 : ${AWS_SECRET_ACCESS_KEY:?"Need to set AWS_SECRET_ACCESS_KEY"}
 
 VPCNAME=uhostelk
-CIDR_BLOCK="10.9.0.0/28"
+CIDR_BLOCK="10.9.0.0/24"
 
 while getopts v:n: option
 do
