@@ -33,8 +33,6 @@ fi
 : ${AWS_ACCESS_KEY_ID:?"Need to set AWS_ACCESS_KEY_ID"}
 : ${AWS_SECRET_ACCESS_KEY:?"Need to set AWS_SECRET_ACCESS_KEY"}
 
-VPCNAME=""
-
 while getopts h: option
 do
   case "${option}"
@@ -45,6 +43,7 @@ done
 
 if [ -z "$VPCNAME" ]; then
   echo "$0 -h <name>"
+  exit 1;
 fi
 
 VPC_NAME=${VPCNAME}-vpc
